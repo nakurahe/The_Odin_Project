@@ -72,3 +72,77 @@ body {
     cursor: pointer;
     width: 150px;
 }
+
+.main-content{
+    padding-left: 10rem;
+    padding-right: 10rem;
+    padding-top: 3rem;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content h2{
+    text-align: center;
+    margin: 0;
+    font-size: 36px;
+    color: #1F2937;
+    font-weight: 900;
+}
+
+.main-content-text-img{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3rem;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    padding-left: 5rem;
+    padding-right: 5rem;
+}
+
+.text-img-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.text-img-block p{
+    font-size: 18px;
+    color: #1F2937;
+    /* Why it seems margin doesn't apply? */
+    margin: 1;
+    text-align: center;
+}
+
+.text-img-block img{
+    width: 80%;
+    height: 80%;
+}
+
+.quote{
+    display: flex;
+    flex-direction: column;
+    background-color: #E5E7EB;
+}
+
+.quote h2{
+    font-size: 36px;
+    color: #1F2937;
+    font-style: light italic;
+    padding-left: 15rem;
+    padding-right: 15rem;
+    padding-top: 8rem;
+    margin: 0;
+}
+
+.quote p{
+    font-size: 18px;
+    color: #1F2937;
+    margin: 0;
+    padding-left: 15rem;
+    padding-right: 15rem;
+    padding-bottom: 8rem;
+    text-align: right;
+}
