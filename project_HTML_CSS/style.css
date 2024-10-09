@@ -119,6 +119,8 @@ body {
 .text-img-block img{
     width: 80%;
     height: 80%;
+    border: 3px solid #3882F6;
+    border-radius: 10px;
 }
 
 .quote{
@@ -145,4 +147,62 @@ body {
     padding-right: 15rem;
     padding-bottom: 8rem;
     text-align: right;
+}
+
+.advertise{
+    display: flex;
+    flex-direction: row;
+    background-color: #3882F6;
+    margin-left: 10rem;
+    margin-right: 10rem;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+    border-radius: 10px;
+    align-items: center;
+}
+
+.advertise-text h3{
+    font-size: 25px;
+    color: #F9FAF8;
+    padding-left: 8rem;
+    padding-right: 8rem;
+    padding-top: 3rem;
+    margin: 0;
+}
+
+.advertise-text p{
+    font-size: 18px;
+    color: #F9FAF8;
+    padding-left: 8rem;
+    padding-right: 8rem;
+    padding-bottom: 3rem;
+    margin: 0;
+}
+
+.advertise button{
+    padding: 5px;
+    background-color: #3882f6;
+    border: 3px solid #F9FAF8;
+    border-radius: 5px;
+    color: #F9FAF8;
+    font-size: 18px;
+    text-align: center;
+    cursor: pointer;
+    width: 150px;
+    margin-left: 5rem;
+}
+
+.footer{
+    background-color: #1F2937;
+    padding-left: 10rem;
+    padding-right: 10rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.footer p{
+    font-size: 18px;
+    color: #E5E7EB;
+    margin: 0;
+    text-align: center;
 }
