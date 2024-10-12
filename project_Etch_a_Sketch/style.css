@@ -29,7 +29,7 @@ body, html {
 }
 
 .sketch-area {
-    width: 75%;
+    width: 90%;
     height: 75%;
     display: flex;
     justify-items: center;
@@ -37,7 +37,7 @@ body, html {
     flex-direction: column;
     border: 1px solid black;
     /* I'll keep the gap here for reference. Will remove it later. */
-    gap: 3px;
+    /* gap: 3px; */
     background-color: honeydew;
     margin: 1rem;
 }
