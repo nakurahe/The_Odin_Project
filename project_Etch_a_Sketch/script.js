@@ -1,17 +1,30 @@
 const selectionArea = document.querySelector('.selection-area');
 const colorBtn = document.querySelector('#color');
-colorBtn.addEventListener('click', () => {
-    // Change the text content of the button.
-    colorBtn.textContent = colorBtn.textContent === 'RGB ON' ? 'RGB OFF' : 'RGB ON';
+const resizeBtn = document.querySelector('#resize');
+const resetBtn = document.querySelector('#reset');
+let isRGBMode = false;
 
-    if (colorBtn.textContent === 'RGB ON') {
+const sketchArea = document.querySelector('.sketch-area');
+const ROWS = 16;
+const COLS = 16;
+
+function getRandomColor() {
+    return `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
+}
+
+colorBtn.addEventListener('click', () => {
+    isRGBMode = !isRGBMode;
+    // Change the text content of the button.
+    colorBtn.textContent = isRGBMode? 'RGB OFF' : 'RGB ON';
+
+    if (!isRGBMode) {
         // Set the color of all cells to black.
         for (let row of sketchArea.children) {
             for (let cell of row.children) {
                 setCellStyle(cell);
             }
         }
-    } else if (colorBtn.textContent === 'RGB OFF') {
+    } else {
         // Set the color of all cells to random RGB values.
         for (let row of sketchArea.children) {
             for (let cell of row.children) {
@@ -22,20 +35,19 @@ colorBtn.addEventListener('click', () => {
     }
 });
 
-
-const resizeBtn = document.querySelector('#resize');
 resizeBtn.addEventListener('click', () => {
-    let input = prompt('Enter a number between 1 and 100 (inclusive).');
-    input = parseInt(input);
-    if (input < 1 || input > 100 || isNaN(input)) {
+    let row = prompt('Enter a number for row between 1 and 100 (inclusive).');
+    let col = prompt('Enter a number for column between 1 and 100 (inclusive).');
+    row = parseInt(row);
+    col = parseInt(col);
+    if (row < 1 || row > 100 || isNaN(row) || col < 1 || col > 100 || isNaN(col)) {
         alert('Invalid input. Please enter a number between 1 and 100 (inclusive).');
     } else {
         sketchArea.innerHTML = '';
-        createGrid(input);
+        createGrid(row, col);
     }
 });
 
-const resetBtn = document.querySelector('#reset');
 resetBtn.addEventListener('click', () => {
     for (let row of sketchArea.children) {
         for (let cell of row.children) {
@@ -43,10 +55,6 @@ resetBtn.addEventListener('click', () => {
         }
     }
 });
-
-const ROWS = 16;
-const COLS = 16;
-const sketchArea = document.querySelector('.sketch-area');
 
 // Function to set a row of cells to a specific style.
 function setRowStyle(row) {
@@ -76,7 +84,11 @@ function createGrid(rows=ROWS, cols=COLS) {
         setRowStyle(rowDiv);
         for (let col = 0; col < cols; col++) {
             const cell = document.createElement('div');
-            setCellStyle(cell);
+            if (isRGBMode) {
+                setCellStyle(cell, `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`);
+            } else {
+                setCellStyle(cell);
+            }
             rowDiv.appendChild(cell);
         }
         sketchArea.appendChild(rowDiv);
