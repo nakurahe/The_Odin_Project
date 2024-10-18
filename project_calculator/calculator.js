@@ -37,7 +37,8 @@ function operate(operator, number1, number2) {
 }
 
 const display = document.querySelector(".display");
-const buttons = document.querySelector(".buttons");
+display.textContent = "";
+const buttons = document.querySelectorAll(".btn");
 const basicOperatorButtons = document.querySelectorAll(".basic-btn");
 
 let lastActionWasCalculation = false;
@@ -60,6 +61,13 @@ function appendChar(char) {
     if (match && lastActionWasCalculation) {
         clearDisplay();
     }
+
+    regex = /[+\-*/%]$/;
+    match = display.textContent.match(regex);
+    if (match && regex.test(char)) {
+        deleteChar();
+    }
+
     // Other than that, append the character to the display and set lastActionWasCalculation to false.
     display.textContent += char;
     lastActionWasCalculation = false;
@@ -84,7 +92,7 @@ function calculate() {
         const result = operate(operator, number1, number2);
         return result;
     }
-    
+
     // Check if the expression contains an integer, an operator, and another integer.
     regex = /(\d+%*)([+\-*/])(\d+%*)/;
     match = expression.match(regex);
@@ -103,8 +111,6 @@ function calculate() {
     }
 
     // If the expression contains a percentage, calculate it.
-    // regex = /\d*\.*\d+%/;
-    // match = expression.match(regex);
     if (expression.includes("%")) {
         const number = parseFloat(expression);
         const result = percentage(number);
@@ -122,6 +128,10 @@ function handleButtonClick(event) {
     } else if (char === "DEL") {
         deleteChar();
     } else if (char === "=") {
+        if (display.textContent === "") {
+            alert("Please enter an expression.");
+            return;
+        }
         const result = calculate();
         display.textContent = result;
         lastActionWasCalculation = true;
@@ -131,26 +141,30 @@ function handleButtonClick(event) {
         if (!match) {
             appendChar(char);
         }
+    } else if (display.textContent === "" && (char === "%" || char === "*" || char === "/")) {
+        alert("Please enter a number first.");
+        return;
+    } else if (!/.%$/.test(display.textContent)) {
+        appendChar(char);
     } else {
         appendChar(char);
     }
 }
 
 // Add event listener to all buttons.
-buttons.addEventListener("click", handleButtonClick);
+buttons.forEach(button => button.addEventListener('click', handleButtonClick));
 
 // Add event listener to basic operator buttons.
-basicOperatorButtons.forEach(button => button.addEventListener("click", () => {
-    const currentDisplay = display.textContent;
-    if (/[+\-*/]/.test(currentDisplay)) {
-        const result = calculate();
-        display.textContent = result;
-        lastActionWasCalculation = false;
-    } 
-}));
-
+basicOperatorButtons.forEach((button) =>
+    button.addEventListener("click", () => {
+        const currentDisplay = display.textContent;
+        if (/[+\-*/]/.test(currentDisplay)) {
+            const result = calculate();
+            display.textContent = result;
+            lastActionWasCalculation = false;
+        }
+    })
+);
 
 // TODO: Add keyboard support.
 // TODO: Make it look nice.
-// TODO: Fix button bugs.
-// TODO: Use the later operator to replace the previous one.
