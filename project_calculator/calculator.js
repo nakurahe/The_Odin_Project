@@ -40,6 +40,8 @@ const display = document.querySelector(".display");
 const buttons = document.querySelector(".buttons");
 const basicOperatorButtons = document.querySelectorAll(".basic-btn");
 
+let lastActionWasCalculation = false;
+
 // Function to clear the display.
 function clearDisplay() {
     display.textContent = "";
@@ -52,32 +54,57 @@ function deleteChar() {
 
 // Function to append a character to the display.
 function appendChar(char) {
+    // If char is a digit and the last action was a calculation, clear the display.
+    let regex = /\d/;
+    let match = char.match(regex);
+    if (match && lastActionWasCalculation) {
+        clearDisplay();
+    }
+    // Other than that, append the character to the display and set lastActionWasCalculation to false.
     display.textContent += char;
+    lastActionWasCalculation = false;
 }
 
 // Function to calculate the result based on the current expression.
 function calculate() {
     const expression = display.textContent;
-    let regex = /(\d*.*\d+)([+\-*/])(\d*.*\d+)/;
+    // Check if the expression contains a decimal number, an operator, and another number.
+    let regex = /(\d*.*\d+%*)([+\-*/])(\d*.*\d+%*)/;
     let match = expression.match(regex);
     if (match) {
+        if (match[1].includes("%")) {
+            match[1] = percentage(parseFloat(match[1].slice(0, -1)));
+        }
         const number1 = parseFloat(match[1]);
         const operator = match[2];
+        if (match[3].includes("%")) {
+            match[3] = percentage(parseFloat(match[3].slice(0, -1)));
+        }
         const number2 = parseFloat(match[3]);
         const result = operate(operator, number1, number2);
         return result;
     }
     
-    regex = /(\d+)([+\-*/])(\d+)/;
+    // Check if the expression contains an integer, an operator, and another integer.
+    regex = /(\d+%*)([+\-*/])(\d+%*)/;
     match = expression.match(regex);
     if (match) {
+        if (match[1].includes("%")) {
+            match[1] = percentage(parseFloat(match[1].slice(0, -1)));
+        }
         const number1 = parseInt(match[1]);
         const operator = match[2];
+        if (match[3].includes("%")) {
+            match[3] = percentage(parseFloat(match[3].slice(0, -1)));
+        }
         const number2 = parseInt(match[3]);
         const result = operate(operator, number1, number2);
         return result;
     }
 
+    // If the expression contains a percentage, calculate it.
+    // regex = /\d*\.*\d+%/;
+    // match = expression.match(regex);
     if (expression.includes("%")) {
         const number = parseFloat(expression);
         const result = percentage(number);
@@ -97,6 +124,13 @@ function handleButtonClick(event) {
     } else if (char === "=") {
         const result = calculate();
         display.textContent = result;
+        lastActionWasCalculation = true;
+    } else if (char === ".") {
+        let regex = /\.\d+$|\.$/;
+        let match = display.textContent.match(regex);
+        if (!match) {
+            appendChar(char);
+        }
     } else {
         appendChar(char);
     }
@@ -111,10 +145,12 @@ basicOperatorButtons.forEach(button => button.addEventListener("click", () => {
     if (/[+\-*/]/.test(currentDisplay)) {
         const result = calculate();
         display.textContent = result;
+        lastActionWasCalculation = false;
     } 
 }));
 
+
 // TODO: Add keyboard support.
-// TODO: Erase numbers in display after one calculation.
-// TODO: Pressing = before entering all of the numbers or an operator could cause problems!
-// TODO: Other extra credit features.
+// TODO: Make it look nice.
+// TODO: Fix button bugs.
+// TODO: Use the later operator to replace the previous one.
