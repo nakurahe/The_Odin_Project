@@ -1,3 +1,5 @@
+const DISPLAY_MAX_LENGTH = 9;
+
 const display = document.querySelector(".display");
 display.textContent = "";
 const buttons = document.querySelectorAll(".btn");
@@ -8,29 +10,30 @@ let validCalculation = true;
 
 // Functions to perform basic arithmetic operations.
 function add(number1, number2) {
-    return parseFloat((number1 + number2).toFixed(9));
+    return parseFloat((number1 + number2).toFixed(DISPLAY_MAX_LENGTH));
 }
 
 function subtract(number1, number2) {
-    return parseFloat((number1 - number2).toFixed(9));
+    return parseFloat((number1 - number2).toFixed(DISPLAY_MAX_LENGTH));
 }
 
 function multiply(number1, number2) {
-    return parseFloat((number1 * number2).toFixed(9));
+    return parseFloat((number1 * number2).toFixed(DISPLAY_MAX_LENGTH));
 }
 
 function divide(number1, number2) {
     if (number2 === 0) {
         alert("Error: Division by zero");
         validCalculation = false;
+        // Return the expression without the last character, which is 0.
         return display.textContent.slice(0, -1);
     }
     validCalculation = true;
-    return parseFloat((number1 / number2).toFixed(9));
+    return parseFloat((number1 / number2).toFixed(DISPLAY_MAX_LENGTH));
 }
 
 function percentage(number) {
-    return parseFloat((number / 100).toFixed(9));
+    return parseFloat((number / 100).toFixed(DISPLAY_MAX_LENGTH));
 }
 
 function operate(operator, number1, number2) {
@@ -63,12 +66,14 @@ function appendChar(char) {
         clearDisplay();
     }
 
-    // Prevent multiple operators in a row.
+    // Prevent multiple operators in a row, by:
+    // If current display ends with [+\-*/], and the input is [+\-*/%],
+    // then delete the last character before appending the new one.
     if (/[+\-*/]$/.test(display.textContent) && /[+\-*/%]/.test(char)) {
         deleteChar();
     }
 
-    // Prevent appending after a percentage.
+    // Prevent appending after a percentage in a similar way.
     if (/.%$/.test(display.textContent) && (char === "%" || /\d/.test(char))) {
         return;
     }
@@ -83,6 +88,7 @@ function calculate() {
     // Check if the expression contains a decimal number, an operator, and another number.
     let regex = /(\d*.*\d+%*)([+\-*/])(\d*.*\d+%*)/;
     let match = expression.match(regex);
+    
     if (match) {
         if (match[1].includes("%")) {
             match[1] = percentage(parseFloat(match[1].slice(0, -1)));
@@ -93,8 +99,7 @@ function calculate() {
             match[3] = percentage(parseFloat(match[3].slice(0, -1)));
         }
         const number2 = parseFloat(match[3]);
-        const result = operate(operator, number1, number2);
-        return result;
+        return operate(operator, number1, number2);
     }
 
     // Check if the expression contains an integer, an operator, and another integer.
@@ -110,15 +115,13 @@ function calculate() {
             match[3] = percentage(parseFloat(match[3].slice(0, -1)));
         }
         const number2 = parseInt(match[3]);
-        const result = operate(operator, number1, number2);
-        return result;
+        return operate(operator, number1, number2);
     }
 
     // If the expression contains a percentage, calculate it.
     if (expression.includes("%")) {
         const number = parseFloat(expression);
-        const result = percentage(number);
-        return result;
+        return percentage(number);
     }
 
     return display.textContent;
@@ -134,11 +137,11 @@ function handleButtonClick(event) {
     } else if (char === "=") {
         if (display.textContent === "") {
             alert("Please enter an expression.");
-            return;
+        } else {
+            const result = calculate();
+            display.textContent = result;
+            lastActionWasCalculation = true && validCalculation;
         }
-        const result = calculate();
-        display.textContent = result;
-        lastActionWasCalculation = true && validCalculation;
     } else if (char === ".") {
         let regex = /\.\d+$|\.$/;
         let match = display.textContent.match(regex);
@@ -158,8 +161,7 @@ buttons.forEach(button => button.addEventListener('click', handleButtonClick));
 // Add event listener to basic operator buttons.
 basicOperatorButtons.forEach((button) =>
     button.addEventListener("click", () => {
-        const currentDisplay = display.textContent;
-        if (/[+\-*/]/.test(currentDisplay)) {
+        if (/[+\-*/]/.test(display.textContent)) {
             const result = calculate();
             display.textContent = result;
             lastActionWasCalculation = false;
@@ -181,10 +183,8 @@ function handleKeyPress(event) {
             const result = calculate();
             display.textContent = result;
             lastActionWasCalculation = false;
-            appendChar(key);
-        } else {
-            appendChar(key);
         }
+        appendChar(key);
     } else if (key === 'Enter' || key === '=') {
         if (display.textContent === "") {
             alert("Please enter an expression.");
