@@ -1,3 +1,11 @@
+const display = document.querySelector(".display");
+display.textContent = "";
+const buttons = document.querySelectorAll(".btn");
+const basicOperatorButtons = document.querySelectorAll(".basic-btn");
+
+let lastActionWasCalculation = false;
+let validCalculation = true;
+
 // Functions to perform basic arithmetic operations.
 function add(number1, number2) {
     return parseFloat((number1 + number2).toFixed(9));
@@ -13,10 +21,14 @@ function multiply(number1, number2) {
 
 function divide(number1, number2) {
     if (number2 === 0) {
-        return "Error: Division by zero";
+        alert("Error: Division by zero");
+        validCalculation = false;
+        return display.textContent.slice(0, -1);
     }
+    validCalculation = true;
     return parseFloat((number1 / number2).toFixed(9));
 }
+
 function percentage(number) {
     return parseFloat((number / 100).toFixed(9));
 }
@@ -32,42 +44,34 @@ function operate(operator, number1, number2) {
         case "/":
             return divide(number1, number2);
         default:
-            return "Error: Invalid operator";
+            return display.textContent;
     }
 }
 
-const display = document.querySelector(".display");
-display.textContent = "";
-const buttons = document.querySelectorAll(".btn");
-const basicOperatorButtons = document.querySelectorAll(".basic-btn");
-
-let lastActionWasCalculation = false;
-
-// Function to clear the display.
+// Function to play with the display.
 function clearDisplay() {
     display.textContent = "";
 }
 
-// Function to delete the last character from the display.
 function deleteChar() {
     display.textContent = display.textContent.slice(0, -1);
 }
 
-// Function to append a character to the display.
 function appendChar(char) {
     // If char is a digit and the last action was a calculation, clear the display.
-    let regex = /\d/;
-    let match = char.match(regex);
-    if (match && lastActionWasCalculation) {
+    if (/\d/.test(char) && lastActionWasCalculation) {
         clearDisplay();
     }
 
-    regex = /[+\-*/%]$/;
-    match = display.textContent.match(regex);
-    if (match && regex.test(char)) {
+    // Prevent multiple operators in a row.
+    if (/[+\-*/]$/.test(display.textContent) && /[+\-*/%]/.test(char)) {
         deleteChar();
     }
 
+    // Prevent appending after a percentage.
+    if (/.%$/.test(display.textContent) && (char === "%" || /\d/.test(char))) {
+        return;
+    }
     // Other than that, append the character to the display and set lastActionWasCalculation to false.
     display.textContent += char;
     lastActionWasCalculation = false;
@@ -134,7 +138,7 @@ function handleButtonClick(event) {
         }
         const result = calculate();
         display.textContent = result;
-        lastActionWasCalculation = true;
+        lastActionWasCalculation = true && validCalculation;
     } else if (char === ".") {
         let regex = /\.\d+$|\.$/;
         let match = display.textContent.match(regex);
@@ -143,9 +147,6 @@ function handleButtonClick(event) {
         }
     } else if (display.textContent === "" && (char === "%" || char === "*" || char === "/")) {
         alert("Please enter a number first.");
-        return;
-    } else if (!/.%$/.test(display.textContent)) {
-        appendChar(char);
     } else {
         appendChar(char);
     }
@@ -162,9 +163,50 @@ basicOperatorButtons.forEach((button) =>
             const result = calculate();
             display.textContent = result;
             lastActionWasCalculation = false;
+            appendChar(button.textContent);
         }
     })
 );
 
-// TODO: Add keyboard support.
-// TODO: Make it look nice.
+// Add keyboard support.
+function handleKeyPress(event) {
+    const key = event.key;
+    if (key >= '0' && key <= '9') {
+        appendChar(key);
+    } else if (display.textContent === "" && (key === "%" || key === "*" || key === "/")) {
+        alert("Please enter a number first.");
+    } else if (key === '+' || key === '-' || key === '*' || key === '/') {
+        const currentDisplay = display.textContent;
+        if (/[+\-*/]/.test(currentDisplay)) {
+            const result = calculate();
+            display.textContent = result;
+            lastActionWasCalculation = false;
+            appendChar(key);
+        } else {
+            appendChar(key);
+        }
+    } else if (key === 'Enter' || key === '=') {
+        if (display.textContent === "") {
+            alert("Please enter an expression.");
+        } else {
+            const result = calculate();
+            display.textContent = result;
+            lastActionWasCalculation = true && validCalculation;
+        }
+    } else if (key === 'Backspace') {
+        deleteChar();
+    } else if (key === 'Escape') {
+        clearDisplay();
+    } else if (key === '.') {
+        let regex = /\.\d+$|\.$/;
+        let match = display.textContent.match(regex);
+        if (!match) {
+            appendChar(key);
+        }
+    } else if (key === '%') {
+        appendChar(key);
+    }
+}
+
+// Add event listener for keyboard input.
+document.addEventListener("keydown", handleKeyPress);
