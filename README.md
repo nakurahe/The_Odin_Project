@@ -1,6 +1,6 @@
 # The Odin Project - Projects
 
-This repository contains all the projects completed as part of [The Odin Project](https://www.theodinproject.com/paths/full-stack-javascript), a self-learning curriculum for web application development.
+This repository contains all the projects completed as part of [The Odin Project](https://www.theodinproject.com), a self-learning curriculum for web application development.
 
 ## Table of Contents
 
@@ -8,8 +8,7 @@ This repository contains all the projects completed as part of [The Odin Project
 2. [Projects](#projects)
 3. [Installation](#installation)
 4. [Usage](#usage)
-5. [Contributing](#contributing)
-6. [License](#license)
+5. [License](#license)
 
 ## Introduction
 
@@ -19,7 +18,12 @@ The Odin Project is a comprehensive open-source curriculum for learning full-sta
 
 1. **Project 1: Foundations**
     - Description: Basic HTML, CSS, and JavaScript projects.
-    - Projects: recipes, landing page, Rock Paper Scissors, Etch-a-Sketch and calculator.
+    - Projects: 
+        - [Recipes](https://github.com/nakurahe/The_Odin_Project/tree/main/Web_Foundations/recipes)
+        - [Landing Page](https://github.com/nakurahe/The_Odin_Project/tree/main/Web_Foundations/landing_page)
+        - [Rock Paper Scissors](https://github.com/nakurahe/The_Odin_Project/tree/main/Web_Foundations/rock_paper_scissors)
+        - [Etch-a-Sketch](https://github.com/nakurahe/The_Odin_Project/tree/main/Web_Foundations/etch_a_sketch)
+        - [Calculator](https://github.com/nakurahe/The_Odin_Project/tree/main/Web_Foundations/calculator)
     - Status: Completed
 
 2. **Project 2: Intermediate HTML and CSS**
@@ -44,7 +48,8 @@ The Odin Project is a comprehensive open-source curriculum for learning full-sta
 
 7. **Project 5: Node.js**
     - Description: Backend development with Node.js.
-    - Projects: basic information site
+    - Projects:
+        - [Basic Information Site](https://github.com/nakurahe/The_Odin_Project/tree/main/NodeJS/basic_information_site)
     - Status: In progress
 
 ## Installation
@@ -52,7 +57,7 @@ The Odin Project is a comprehensive open-source curriculum for learning full-sta
 To clone this repository, run:
 
 ```bash
-git clone https://github.com/yourusername/the-odin-project-projects.git
+git clone https://github.com/nakurahe/The_Odin_Project.git
 ```
 
 ## Usage
