@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "text": "Hi there!",
+    "user": "Amando",
+    "added": "2023-10-01T12:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "text": "Hello World!",
+    "user": "Charles",
+    "added": "2023-10-01T12:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "text": "*beep*",
+    "user": "Joann",
+    "added": "2024-10-30T22:20:00.365Z"
+  },
+  {
+    "id": 4,
+    "text": "????",
+    "user": "Jane Doe",
+    "added": "2024-10-30T22:20:31.051Z"
+  },
+  {
+    "id": 5,
+    "text": "naicang138@163.com",
+    "user": "joann",
+    "added": "2024-10-30T22:20:56.249Z"
+  }
+]

@@ -1,0 +1,20 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+
+<div class="container">
+    <% if (messages != undefined && messages.length > 0) {%>
+    <ul>
+        <% messages.forEach(message => { %>
+            <li>
+                <strong><%= message.user %></strong>: <%= message.text %> <em>(<%= message.added.toLocaleString() %>)</em>
+                <a href="/message/<%= message.id %>"><button>Open</button></a>
+            </li>
+        <% }) %>
+    </ul>
+    <%} else { %>
+    <h1>No messages yet</h1>
+    <% } %>
+    <a href="/message/new">Add a new message</a>
+</div>
+
+<%- include('../partials/footer') %>
