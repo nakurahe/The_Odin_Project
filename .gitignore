@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,venv,node,macos
-# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,venv,node,macos
+# Created by https://www.toptal.com/developers/gitignore/api/macos,visualstudiocode,venv,node
+# Edit at https://www.toptal.com/developers/gitignore?templates=macos,visualstudiocode,venv,node
 
 ### macOS ###
 # General
@@ -207,4 +207,4 @@ pip-selfcheck.json
 .history
 .ionide
 
-# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,venv,node,macos
+# End of https://www.toptal.com/developers/gitignore/api/macos,visualstudiocode,venv,node
