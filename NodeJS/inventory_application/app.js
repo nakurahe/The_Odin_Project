@@ -19,6 +19,22 @@ app.get("/", async(req, res) => {
     }
 });
 
+app.get("/items/:id", async(req, res) => {
+    try {
+        const loveItem = await db.getInventoryById(req.params.id);
+        if (!loveItem) {
+            res.status(404).render("pages/error", { title: "Page Not Found" });
+            return;
+        }
+        res.render("pages/detail", {
+            title: loveItem.name,
+            loveItem,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).render("pages/error", { title: "Database Error" });
+    }
+});
 
 app.use((req, res) => {
     res.status(404).render("pages/error", { title: "Page Not Found" });
