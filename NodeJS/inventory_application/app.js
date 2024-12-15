@@ -36,6 +36,13 @@ app.get("/items/:id", async(req, res) => {
     }
 });
 
+app.get("/order/:id", (req, res) => {
+    res.render("pages/order", {
+        title: "Order",
+        id: req.params.id,
+    });
+});
+
 app.use((req, res) => {
     res.status(404).render("pages/error", { title: "Page Not Found" });
 });
