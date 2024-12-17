@@ -20,12 +20,15 @@ app.get("/", async(req, res) => {
 });
 
 app.get("/items/:id", async(req, res) => {
+    const id = req.params.id;
     try {
-        const loveItem = await db.getInventoryById(req.params.id);
+        const loveItem = await db.getInventoryById(parseInt(id));
         if (!loveItem) {
             res.status(404).render("pages/error", { title: "Page Not Found" });
             return;
         }
+        const purchaseHistory = await db.getPurchaseHistoryByItemId(parseInt(id));
+        loveItem.purchaseHistory = purchaseHistory;
         res.render("pages/detail", {
             title: loveItem.name,
             loveItem,

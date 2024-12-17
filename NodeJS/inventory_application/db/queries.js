@@ -10,7 +10,13 @@ async function getInventoryById(id) {
     return result.rows[0];
 }
 
+async function getPurchaseHistoryByItemId(itemId) {
+    const result = await pool.query('SELECT * FROM purchase_history WHERE item_id = $1', [itemId]);
+    return result.rows;
+}
+
 module.exports = {
     getAllInventory,
     getInventoryById,
+    getPurchaseHistoryByItemId,
 };
