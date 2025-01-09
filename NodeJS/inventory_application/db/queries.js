@@ -10,13 +10,18 @@ async function getInventoryById(id) {
     return result.rows[0];
 }
 
-async function getPurchaseHistoryByItemId(itemId) {
-    const result = await pool.query('SELECT * FROM purchase_history WHERE item_id = $1', [itemId]);
+// async function getPurchaseHistoryByItemId(itemId) {
+//     const result = await pool.query('SELECT * FROM purchase_history WHERE item_id = $1', [itemId]);
+//     return result.rows;
+// }
+async function getKRandomInventory(k) {
+    const result = await pool.query('SELECT * FROM nyanya_activities ORDER BY random() LIMIT $1', [k]);
     return result.rows;
 }
 
 module.exports = {
     getAllInventory,
     getInventoryById,
-    getPurchaseHistoryByItemId,
+    // getPurchaseHistoryByItemId,
+    getKRandomInventory,
 };

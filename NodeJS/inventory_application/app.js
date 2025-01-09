@@ -2,6 +2,7 @@ const express = require("express");
 const db = require("./db/queries");
 const app = express();
 const port = 3000;
+const randomItemNumber = 3;
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
@@ -9,10 +10,11 @@ app.use(express.static("public"));
 
 app.get("/", async(req, res) => {
     try {
-        const loveItems = await db.getAllInventory();
+        const loveItems = await db.getKRandomInventory(randomItemNumber);
         res.render("pages/index", {
             title: "~ NyanyanyA ~",
             loveItems,
+            randomItemNumber,
         });
     } catch (error) {
         console.log(error);
@@ -28,8 +30,8 @@ app.get("/items/:id", async(req, res) => {
             res.status(404).render("pages/error", { title: "Page Not Found" });
             return;
         }
-        const purchaseHistory = await db.getPurchaseHistoryByItemId(parseInt(id));
-        loveItem.purchaseHistory = purchaseHistory;
+        // const purchaseHistory = await db.getPurchaseHistoryByItemId(parseInt(id));
+        // loveItem.purchaseHistory = purchaseHistory;
         res.render("pages/detail", {
             title: loveItem.name,
             loveItem,
@@ -40,11 +42,17 @@ app.get("/items/:id", async(req, res) => {
     }
 });
 
-app.get("/order/:id", (req, res) => {
-    res.render("pages/order", {
-        title: "Order",
-        id: req.params.id,
-    });
+app.get("/items", async(req, res) => {
+    try {
+        const loveItems = await db.getAllInventory();
+        res.render("pages/items", {
+            title: "Items",
+            loveItems,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).render("pages/error", { title: "Database Error" });
+    }
 });
 
 app.use((req, res) => {

@@ -2,6 +2,10 @@
 <%- include('../partials/header') %>
 
 <div class="container">
+    <div>
+        <h1 class="display-4">Welcome to Nyanya Love Item Admin Page!</h1>
+        <p class="lead text-center">Here are <%= randomItemNumber %> highlighted items</p>
+    </div>
     <% if (loveItems) { %>
         <div class="row">
             <% loveItems.forEach(loveItem => { %>
