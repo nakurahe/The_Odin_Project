@@ -19,9 +19,17 @@ async function getKRandomInventory(k) {
     return result.rows;
 }
 
+async function createItem({ name, description, energy_level, provider, genre }) {
+    await pool.query(
+        'INSERT INTO nyanya_activities (name, description, energy_level, provider, genre) VALUES ($1, $2, $3, $4, $5)',
+        [name, description, energy_level, provider, genre]
+    );
+}
+
 module.exports = {
     getAllInventory,
     getInventoryById,
     // getPurchaseHistoryByItemId,
     getKRandomInventory,
+    createItem,
 };

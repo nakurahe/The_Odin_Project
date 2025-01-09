@@ -3,6 +3,7 @@ const db = require("./db/queries");
 const app = express();
 const port = 3000;
 const randomItemNumber = 3;
+const genres = ["Mental", "Physical", "General"];
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
@@ -14,8 +15,33 @@ app.get("/", async(req, res) => {
         res.render("pages/index", {
             title: "~ NyanyanyA ~",
             loveItems,
-            randomItemNumber,
+            h1Contents: "Welcome to Nyanya Love Item Admin Page!",
+            pContents: `Here are ${randomItemNumber} items that you might love ❤️`,
         });
+    } catch (error) {
+        console.log(error);
+        res.status(500).render("pages/error", { title: "Database Error" });
+    }
+});
+
+app.get("/items/new", (req, res) => {
+    res.render("pages/new", { title: "New Item", genres, });
+});
+
+app.post("/items", async(req, res) => {
+    const { name, description, energy_level, provider, genre_id } = req.body;
+    try {
+        const providers = Array.isArray(provider) ? provider : [provider];
+        const providerString = providers.join(" | "); // Join providers with " | "
+
+        await db.createItem({
+            name,
+            description,
+            energy_level: parseInt(energy_level, 10),
+            provider: providerString,
+            genre: genres[parseInt(genre_id, 10) - 1],
+        });
+        res.redirect("/");
     } catch (error) {
         console.log(error);
         res.status(500).render("pages/error", { title: "Database Error" });
@@ -45,9 +71,10 @@ app.get("/items/:id", async(req, res) => {
 app.get("/items", async(req, res) => {
     try {
         const loveItems = await db.getAllInventory();
-        res.render("pages/items", {
-            title: "Items",
+        res.render("pages/index", {
+            title: "All Items",
             loveItems,
+            pContents: "Here are all current available items ❤️",
         });
     } catch (error) {
         console.log(error);

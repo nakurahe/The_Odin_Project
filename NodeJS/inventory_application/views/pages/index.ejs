@@ -3,8 +3,8 @@
 
 <div class="container">
     <div>
-        <h1 class="display-4">Welcome to Nyanya Love Item Admin Page!</h1>
-        <p class="lead text-center">Here are <%= randomItemNumber %> highlighted items</p>
+        <h1 class="display-4 text-center"><%= typeof h1Contents == 'undefined' ? "" : h1Contents %></h1>
+        <p class="lead text-center"> <%= typeof pContents == 'undefined' ? "" : pContents %></p>
     </div>
     <% if (loveItems) { %>
         <div class="row">
@@ -14,12 +14,14 @@
                         <img src="<%= loveItem.image_path %>" class="card-img-top" alt="<%= loveItem.name %>">
                         <div class="card-body">
                             <h5 class="card-title"><a href="/items/<%= loveItem.id %>"><%= loveItem.name %></a></h5>
-                            <p class="card-text"><%= loveItem.description %></p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <a href="/order/<%= loveItem.id %>" class="btn btn-sm btn-outline-secondary">Order</a>
-                                </div>
-                                <small class="text-muted">💪<%= loveItem.energy_level %></small>
+                            <!-- Description and energy on the same row, energy at far right -->
+                            <p class="card-text d-flex justify-content-between">
+                                <span><%= loveItem.description %></span>
+                                <span class="text-muted">💪<%= loveItem.energy_level %></span>
+                            </p>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <a href="/item/<%= loveItem.id %>" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                <a href="/delete-confirm/<%= loveItem.id %>" class="btn btn-sm btn-outline-secondary">Delete</a>
                             </div>
                         </div>
                     </div>
@@ -28,7 +30,7 @@
         </div>
     <% } else { %>
         <div class="alert alert-warning" role="alert">
-            No love items found
+            No love items found!
         </div>
     <% } %>
 </div>

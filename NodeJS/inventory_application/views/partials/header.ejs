@@ -1,3 +1,6 @@
+<!-- Include Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 <header class="p-3 bg-dark text-white mb-4">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -6,7 +9,10 @@
                 <li><a href="/items" class="nav-link px-2 text-white"><%= typeof showAllItems == 'undefined' ? 'All Items' : showAllItems %></a></li>
                 <li><a href="/genres" class="nav-link px-2 text-white"><%= typeof showAllGenres == 'undefined' ? 'All Genres' : showAllGenres %></a></li>
             </ul>
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" method="GET">
+            <form class="d-flex col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" method="GET">
+                <a href="/items/new" class="btn btn-outline-light me-2">
+                    <i class="fas fa-plus"></i>
+                </a>
                 <input type="search" name="search" class="form-control form-control-dark" placeholder="Search by Item Name" aria-label="Search">
             </form>
         </div>
