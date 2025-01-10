@@ -1,6 +1,10 @@
 const express = require("express");
 const db = require("./db/queries");
 const app = express();
+
+const multer = require("multer");
+const upload = multer({ dest: "public/images" });
+
 const port = 3000;
 const randomItemNumber = 3;
 const genres = ["Mental", "Physical", "General"];
@@ -28,18 +32,20 @@ app.get("/items/new", (req, res) => {
     res.render("pages/new", { title: "New Item", genres, });
 });
 
-app.post("/items", async(req, res) => {
-    const { name, description, energy_level, provider, genre_id } = req.body;
+app.post("/items", upload.single('image_path') ,async(req, res) => {
+    const { name, description, energy_level, provider, genre } = req.body;
     try {
         const providers = Array.isArray(provider) ? provider : [provider];
         const providerString = providers.join(" | "); // Join providers with " | "
 
+        const image_path = req.file ? `/images/${req.file.filename}` : null;
         await db.createItem({
             name,
             description,
             energy_level: parseInt(energy_level, 10),
             provider: providerString,
-            genre: genres[parseInt(genre_id, 10) - 1],
+            genre,
+            image_path,
         });
         res.redirect("/");
     } catch (error) {

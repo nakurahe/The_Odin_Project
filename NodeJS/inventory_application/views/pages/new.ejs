@@ -35,11 +35,11 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="genre_id" class="form-label">Genre</label>
-                    <select class="form-select" id="genre_id" name="genre_id" required>
+                    <label for="genre" class="form-label">Genre</label>
+                    <select class="form-select" id="genre" name="genre" required>
                         <option value="">Select a genre</option>
                         <% genres.forEach(genre => { %>
-                            <option value="<%= genre %>"><%= genre.name %></option>
+                            <option value="<%= genre %>"><%= genre %></option>
                         <% }) %>
                     </select>
                 </div>
